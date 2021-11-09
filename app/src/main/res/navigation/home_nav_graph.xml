@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/heartRateFragment">
+
+    <fragment
+        android:id="@+id/heartRateFragment"
+        android:name="com.juansicardo.monitor.heartrate.HeartRateFragment"
+        android:label="heart_rate_fragment"
+        tools:layout="@layout/heart_rate_fragment" />
+    <fragment
+        android:id="@+id/bloodOxygenFragment"
+        android:name="com.juansicardo.monitor.bloodoxygen.BloodOxygenFragment"
+        android:label="blood_oxygen_fragment"
+        tools:layout="@layout/blood_oxygen_fragment" />
+    <fragment
+        android:id="@+id/bloodPressureFragment"
+        android:name="com.juansicardo.monitor.bloodpressure.BloodPressureFragment"
+        android:label="blood_pressure_fragment"
+        tools:layout="@layout/blood_pressure_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.juansicardo.monitor.settings.SettingsFragment"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" />
+</navigation>

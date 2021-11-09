@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".heartrate.HeartRateFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/display_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/Widget.Monitor.TextView.Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/heart_rate_title" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/data_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/data_text_view"
+                    style="@style/Widget.Monitor.TextView.DataDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="56sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="6sp"
+                    tools:text="90" />
+
+                <TextView
+                    style="@style/Widget.Monitor.TextView.Heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32sp"
+                    android:layout_gravity="bottom"
+                    android:text="@string/bps" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/warning_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/warning_image_view"
+                    style="@style/Widget.Monitor.ImageView.IconLarge"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:importantForAccessibility="no"
+                    android:tint="@color/yellow_A200"
+                    app:srcCompat="@drawable/icon_info" />
+
+                <TextView
+                    android:id="@+id/warning_text_view"
+                    style="@style/Widget.Monitor.TextView.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="@string/band_not_connected" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Button
+                android:id="@+id/activate_bluetooth_button"
+                style="@style/Widget.Monitor.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/activate_bluetooth" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/graph_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/display_card_view">
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

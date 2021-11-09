@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.Monitor.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    </style>
+
+    <style name="Widget.Monitor.TextView.Heading" parent="Widget.Monitor.TextView">
+        <item name="android:minHeight">52dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    </style>
+
+    <style name="Widget.Monitor.TextView.Small" parent="Widget.Monitor.TextView">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Widget.Monitor.TextView.DataDisplay" parent="Widget.Monitor.TextView.Heading">
+        <item name="android:textSize">50sp</item>
+    </style>
+
+    <style name="Widget.Monitor.ImageView.IconSmall" parent="TextAppearance.AppCompat">
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.Monitor.ImageView.IconLarge" parent="TextAppearance.AppCompat">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.Monitor.ImageView.IconHuge" parent="TextAppearance.AppCompat">
+        <item name="android:layout_height">112dp</item>
+        <item name="android:layout_width">112dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.Monitor.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">10dp</item>
+        <item name="android:minHeight">64dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Widget.Monitor.Button.Warn" parent="Widget.Monitor.Button">
+        <item name="backgroundTint">@color/light_gray</item>
+        <item name="android:textColor">@color/warn</item>
+    </style>
+
+    <style name="Widget.Monitor.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">15dp</item>
+    </style>
+
+    <style name="Widget.Monitor.Light.CardView" parent="Widget.Monitor.CardView">
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/light_gray</item>
+    </style>
+
+    <style name="Widget.Monitor.TextInputLayout.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+    </style>
+</resources>
