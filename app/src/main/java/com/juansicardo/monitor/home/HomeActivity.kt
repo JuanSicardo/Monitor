@@ -25,6 +25,7 @@ import com.juansicardo.monitor.ble.LocationPermissionRequester
 import com.juansicardo.monitor.constants.ApplicationConstants
 import com.juansicardo.monitor.database.DataBaseViewModel
 import com.juansicardo.monitor.dialog.LoadingDialogFragment
+import com.juansicardo.monitor.measurement.Measurement
 import com.juansicardo.monitor.profile.Profile
 import com.juansicardo.monitor.settings.ProfileSettingsManager
 import com.juansicardo.monitor.sms.SendSMSPermissionRequester
@@ -38,6 +39,7 @@ class HomeActivity : AppCompatActivity() {
         private const val MONITOR_SERVICE_UUID = "0000180c-0000-1000-8000-00805f9b34fb"
         private const val HEART_RATE_CHARACTERISTIC_UUID = "00002a56-0000-1000-8000-00805f9b34fb"
         private const val BLOOD_OXYGEN_CHARACTERISTIC_UUID = "00002a57-0000-1000-8000-00805f9b34fb"
+        private const val BLOOD_PRESSURE_CHARACTERISTIC_UUID = "00002a58-0000-1000-8000-00805f9b34fb"
         private const val NOTIFICATIONS_DESCRIPTOR_UUID = "00002902-0000-1000-8000-00805f9b34fb"
 
         fun createIntent(context: Context, profileId: Int) = Intent(context, HomeActivity::class.java).apply {
