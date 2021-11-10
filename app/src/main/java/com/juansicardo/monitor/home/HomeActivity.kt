@@ -25,7 +25,6 @@ import com.juansicardo.monitor.ble.LocationPermissionRequester
 import com.juansicardo.monitor.constants.ApplicationConstants
 import com.juansicardo.monitor.database.DataBaseViewModel
 import com.juansicardo.monitor.dialog.LoadingDialogFragment
-import com.juansicardo.monitor.measurement.Measurement
 import com.juansicardo.monitor.profile.Profile
 import com.juansicardo.monitor.settings.ProfileSettingsManager
 import com.juansicardo.monitor.sms.SendSMSPermissionRequester
@@ -72,6 +71,7 @@ class HomeActivity : AppCompatActivity() {
 
     //Business logic
     private val homeViewModel: HomeViewModel by viewModels()
+    private val measurementViewModel: MeasurementViewModel by viewModels()
 
     //Bluetooth
     private val bluetoothViewModel: BluetoothViewModel by viewModels()
@@ -188,42 +188,17 @@ class HomeActivity : AppCompatActivity() {
         }
 
         fun enableNotifications(characteristic: BluetoothGattCharacteristic) {
-            if (characteristic == heartRateCharacteristic)
-                Log.d(ApplicationConstants.APP_TAG, "Enabling notifications for heartRate")
-            else if (characteristic == bloodOxygenCharacteristic)
-                Log.d(ApplicationConstants.APP_TAG, "Enabling notifications for bloodOxygen")
-
             val notificationDescriptorUuid = UUID.fromString(NOTIFICATIONS_DESCRIPTOR_UUID)
 
             val payload = when {
-                characteristic.isIndicatable() -> {
-                    if (characteristic == heartRateCharacteristic)
-                        Log.d(ApplicationConstants.APP_TAG, "Heart rate is indicatable")
-                    else if (characteristic == bloodOxygenCharacteristic)
-                        Log.d(ApplicationConstants.APP_TAG, "Blood oxygen is indicatable")
-
-                    BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
-                }
-                characteristic.isNotifiable() -> {
-                    if (characteristic == heartRateCharacteristic)
-                        Log.d(ApplicationConstants.APP_TAG, "Heart rate is notifiable")
-                    else if (characteristic == bloodOxygenCharacteristic)
-                        Log.d(ApplicationConstants.APP_TAG, "Blood oxygen is notifiable")
-
-                    BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
-                }
+                characteristic.isIndicatable() -> BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
+                characteristic.isNotifiable() -> BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
                 else -> return
             }
 
             characteristic.getDescriptor(notificationDescriptorUuid)?.let { notificationDescriptor ->
                 if (bluetoothGatt?.setCharacteristicNotification(characteristic, true) == false)
                     return
-                else {
-                    if (characteristic == heartRateCharacteristic)
-                        Log.d(ApplicationConstants.APP_TAG, "Heart rate notifications enabled")
-                    else if (characteristic == bloodOxygenCharacteristic)
-                        Log.d(ApplicationConstants.APP_TAG, "bloodOxygen notifications enabled")
-                }
 
                 writeDescriptor(notificationDescriptor, payload)
             } ?: Log.e(ApplicationConstants.APP_TAG, "${characteristic.uuid} doesn't contain the CCC descriptor!")
@@ -302,8 +277,30 @@ class HomeActivity : AppCompatActivity() {
 
         isSmartBandConnected.observe(this) { isSmartBandConnected ->
             homeViewModel.setIsSmartBandConnected(isSmartBandConnected)
-            if (!isSmartBandConnected)
+
+            if (isSmartBandConnected) {
+                loadingDialogFragment.show()
+
+                homeViewModel.bloodOxygen.observe(this) { bloodOxygen ->
+                    loadingDialogFragment.dismiss()
+                    measurementViewModel.recordBloodOxygenMeasurement(bloodOxygen)
+                }
+
+                homeViewModel.heartRate.observe(this) { heartRate ->
+                    loadingDialogFragment.dismiss()
+                    measurementViewModel.recordHeartRateMeasurement(heartRate)
+                }
+
+            } else {
+
+                homeViewModel.bloodOxygen.removeObservers(this)
+                homeViewModel.restartBloodOxygen()
+
+                homeViewModel.heartRate.removeObservers(this)
+                homeViewModel.restartHeartRate()
+
                 startBleScan()
+            }
         }
 
         //Get from database
@@ -312,6 +309,7 @@ class HomeActivity : AppCompatActivity() {
             try {
                 this.profile = profile
                 homeViewModel.setProfile(profile)
+                measurementViewModel.profileId = profile.profileId
 
                 //Settings
                 homeViewModel.setProfileSettingsManager(ProfileSettingsManager(this, profile.profileId))
@@ -326,6 +324,8 @@ class HomeActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+        measurementViewModel.databaseViewModel = dataBaseViewModel
     }
 
     //Start scanning for the smart band

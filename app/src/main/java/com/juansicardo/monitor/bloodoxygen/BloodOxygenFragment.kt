@@ -80,14 +80,9 @@ class BloodOxygenFragment : Fragment() {
             this.isSmartBandConnected = isSmartBandConnected
 
             if (isSmartBandConnected) {
-                homeViewModel.loadingDialogFragment.show()
                 homeViewModel.bloodOxygen.observe(viewLifecycleOwner) { bloodOxygen ->
                     this.bloodOxygen = bloodOxygen
-                    homeViewModel.loadingDialogFragment.dismiss()
                 }
-            } else {
-                homeViewModel.heartRate.removeObservers(viewLifecycleOwner)
-                homeViewModel.restartHeartRate()
             }
 
             updateUI()
@@ -104,16 +99,19 @@ class BloodOxygenFragment : Fragment() {
         //Bluetooth disabled
         if (!isBluetoothEnabled) {
             dataDisplay.visibility = View.GONE
+            dataTextView.text = ""
             warningTextView.text = getString(R.string.bluetooth_disabled_warning)
             warningDisplay.visibility = View.VISIBLE
             activateBluetoothButton.visibility = View.VISIBLE
         } else if (!isLocationPermissionGranted) {
             dataDisplay.visibility = View.GONE
+            dataTextView.text = ""
             warningTextView.text = getString(R.string.location_disabled_warning)
             warningDisplay.visibility = View.VISIBLE
             activateBluetoothButton.visibility = View.GONE
         } else if (!isSmartBandConnected) {
             dataDisplay.visibility = View.GONE
+            dataTextView.text = ""
             warningTextView.text = getString(R.string.smart_band_not_connected_warning)
             warningDisplay.visibility = View.VISIBLE
             activateBluetoothButton.visibility = View.GONE
