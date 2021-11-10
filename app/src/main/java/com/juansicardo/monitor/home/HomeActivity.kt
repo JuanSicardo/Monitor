@@ -137,6 +137,7 @@ class HomeActivity : AppCompatActivity() {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     //Smart band is connected
                     bluetoothGatt = gatt
+                    homeViewModel.bluetoothGatt = gatt
                     Handler(Looper.getMainLooper()).post {
                         bluetoothGatt?.discoverServices()
                     }
@@ -230,6 +231,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        Log.d(ApplicationConstants.APP_TAG, "Home Activity on Create")
+
         loadingDialogFragment = LoadingDialogFragment(this)
         homeViewModel.loadingDialogFragment = loadingDialogFragment
         loadingDialogFragment.show()
@@ -320,7 +323,9 @@ class HomeActivity : AppCompatActivity() {
 
                 loadingDialogFragment.dismiss()
             } catch (e: Exception) {
+                Log.d(ApplicationConstants.APP_TAG, "Se ejecuta")
                 profileLiveData.removeObservers(this)
+                bluetoothGatt?.close()
                 finish()
             }
         }

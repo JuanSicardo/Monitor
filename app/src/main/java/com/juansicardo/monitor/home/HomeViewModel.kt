@@ -1,5 +1,6 @@
 package com.juansicardo.monitor.home
 
+import android.bluetooth.BluetoothGatt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import com.juansicardo.monitor.settings.ProfileSettingsManager
 class HomeViewModel : ViewModel() {
 
     lateinit var loadingDialogFragment: LoadingDialogFragment
+    var bluetoothGatt: BluetoothGatt? = null
 
     private val mutableProfile = MutableLiveData<Profile>()
     val profile: LiveData<Profile>

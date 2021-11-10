@@ -32,7 +32,7 @@ class SettingsFragment : Fragment() {
 
     //Business logic
     private lateinit var profile: Profile
-    private val viewModel: HomeViewModel by activityViewModels()
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,13 +52,13 @@ class SettingsFragment : Fragment() {
         emergencyMessagesSwitch = view.findViewById(R.id.emergency_messages_switch)
 
         //Extract data from parent activity
-        viewModel.profile.observe(viewLifecycleOwner) { profile ->
+        homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
             this.profile = profile
 
-            viewModel.isSendSMSPermissionGranted.observe(viewLifecycleOwner) { isSendSMSPermissionGranted ->
+            homeViewModel.isSendSMSPermissionGranted.observe(viewLifecycleOwner) { isSendSMSPermissionGranted ->
                 this.isSendSMSPermissionGranted = isSendSMSPermissionGranted
 
-                viewModel.profileSettingsManager.observe(viewLifecycleOwner) { profileSettingsManager ->
+                homeViewModel.profileSettingsManager.observe(viewLifecycleOwner) { profileSettingsManager ->
                     this.profileSettingsManager = profileSettingsManager
                     initMessageOption()
                 }
@@ -82,6 +82,7 @@ class SettingsFragment : Fragment() {
 
         //Logout
         logoutCardView.setOnClickListener {
+            homeViewModel.bluetoothGatt?.close()
             activity?.finish()
         }
     }
