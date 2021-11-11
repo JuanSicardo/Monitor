@@ -9,6 +9,9 @@ interface MeasurementDao {
     @Query("SELECT * FROM measurements")
     fun findAllMeasurements(): LiveData<List<Measurement>>
 
+    @Query("SELECT * FROM measurements WHERE profile_owner_id = :profileId")
+    fun findMeasurementsByProfile(profileId: Int): LiveData<List<Measurement>>
+
     @Query("SELECT * FROM measurements WHERE profile_owner_id = :profileId AND measurement_type = :type")
     fun findMeasurementsByProfileAndType(profileId: Int, type: Int): LiveData<List<Measurement>>
 

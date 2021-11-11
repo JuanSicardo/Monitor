@@ -92,6 +92,8 @@ class DataBaseViewModel(application: Application) : AndroidViewModel(application
     }
 
     //Measurement
+    fun findMeasurementsByProfile(profileId: Int) = measurementRepository.findMeasurementsByProfile(profileId)
+
     fun findMeasurementsByProfileAndType(profileId: Int, type: Int) =
         measurementRepository.findMeasurementsByProfileAndType(profileId, type)
 

@@ -137,6 +137,7 @@ class UpdateDeleteProfileActivity : AppCompatActivity(), ConfirmationDialogFragm
                 birthdayEditText.setText(birthdayText)
 
                 loadingDialogFragment.dismiss()
+
             }
         }
 
@@ -221,15 +222,33 @@ class UpdateDeleteProfileActivity : AppCompatActivity(), ConfirmationDialogFragm
                 emergencyContacts.forEach { emergencyContact ->
                     dataBaseViewModel.deleteEmergencyContact(emergencyContact)
                 }
-                dataBaseViewModel.deleteProfile(profile)
 
-                profileSettingsManager = ProfileSettingsManager(this, profile.profileId)
-                profileSettingsManager.deleteAreEmergencySMSEnabled()
-
-                deleteToast.show()
-                finish()
+                deleteAllProfileMeasurements()
             }
         }
+    }
+
+    private fun deleteAllProfileMeasurements() {
+        val profileMeasurementsLiveData = dataBaseViewModel.findMeasurementsByProfile(profile.profileId)
+
+        profileMeasurementsLiveData.observe(this) { profileMeasurements ->
+            if (profileMeasurements.isNotEmpty())
+                dataBaseViewModel.deleteMeasurement(profileMeasurements[0])
+            else {
+                profileMeasurementsLiveData.removeObservers(this)
+                deleteProfile()
+            }
+        }
+    }
+
+    private fun deleteProfile() {
+        profileSettingsManager = ProfileSettingsManager(this, profile.profileId)
+        profileSettingsManager.deleteAreEmergencySMSEnabled()
+
+        dataBaseViewModel.deleteProfile(profile)
+        deleteToast.show()
+
+        finish()
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {}
