@@ -127,6 +127,9 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var bloodOxygenCharacteristic: BluetoothGattCharacteristic
     private lateinit var bloodOxygenNotificationsDescriptor: BluetoothGattDescriptor
 
+    private var heartRateCounter = 0
+    private var bloodOxygenCounter = 0
+
     //The methods of gattCallback are called during the connection phase
     private val gattCallback = object : BluetoothGattCallback() {
 
@@ -286,12 +289,24 @@ class HomeActivity : AppCompatActivity() {
 
                 homeViewModel.bloodOxygen.observe(this) { bloodOxygen ->
                     loadingDialogFragment.dismiss()
-                    measurementViewModel.recordBloodOxygenMeasurement(bloodOxygen)
+
+                    if (bloodOxygenCounter % 5 == 0) {
+                        bloodOxygenCounter = 0;
+                        measurementViewModel.recordBloodOxygenMeasurement(bloodOxygen)
+                    }
+
+                    bloodOxygenCounter++
                 }
 
                 homeViewModel.heartRate.observe(this) { heartRate ->
                     loadingDialogFragment.dismiss()
-                    measurementViewModel.recordHeartRateMeasurement(heartRate)
+
+                    if (heartRateCounter % 5 == 0) {
+                        heartRateCounter = 0;
+                        measurementViewModel.recordHeartRateMeasurement(heartRate)
+                    }
+
+                    heartRateCounter++
                 }
 
             } else {
