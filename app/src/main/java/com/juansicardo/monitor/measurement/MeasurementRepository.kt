@@ -9,6 +9,9 @@ class MeasurementRepository(private val measurementDao: MeasurementDao) {
 
     fun findMeasurementsByProfile(profileId: Int) = measurementDao.findMeasurementsByProfile(profileId)
 
+    fun findMeasurementsByProfileTypeAndDate(profileId: Int, type: Int, start: Long, end: Long) =
+        measurementDao.findMeasurementsByProfileTypeAndDate(profileId, type, start, end)
+
     suspend fun insertMeasurement(measurement: Measurement) = measurementDao.insertMeasurement(measurement)
 
     suspend fun updateMeasurement(measurement: Measurement) = measurementDao.updateMeasurement(measurement)

@@ -114,4 +114,7 @@ class DataBaseViewModel(application: Application) : AndroidViewModel(application
             measurementRepository.deleteMeasurement(measurement)
         }
     }
+
+    fun findMeasurementsByProfileTypeAndDate(profileId: Int, type: Int, start: Long, end: Long) =
+        measurementRepository.findMeasurementsByProfileTypeAndDate(profileId, type, start, end)
 }

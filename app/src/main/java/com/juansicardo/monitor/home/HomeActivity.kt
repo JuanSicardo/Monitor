@@ -72,6 +72,8 @@ class HomeActivity : AppCompatActivity() {
     //Business logic
     private val homeViewModel: HomeViewModel by viewModels()
     private val measurementViewModel: MeasurementViewModel by viewModels()
+    private val heartRateHistoryViewModel: HistoryViewModel by viewModels()
+    private val bloodOxygenHistoryViewModel: HistoryViewModel by viewModels()
 
     //Bluetooth
     private val bluetoothViewModel: BluetoothViewModel by viewModels()
@@ -291,7 +293,7 @@ class HomeActivity : AppCompatActivity() {
                     loadingDialogFragment.dismiss()
 
                     if (bloodOxygenCounter % 5 == 0) {
-                        bloodOxygenCounter = 0;
+                        bloodOxygenCounter = 0
                         measurementViewModel.recordBloodOxygenMeasurement(bloodOxygen)
                     }
 
@@ -302,7 +304,7 @@ class HomeActivity : AppCompatActivity() {
                     loadingDialogFragment.dismiss()
 
                     if (heartRateCounter % 5 == 0) {
-                        heartRateCounter = 0;
+                        heartRateCounter = 0
                         measurementViewModel.recordHeartRateMeasurement(heartRate)
                     }
 
