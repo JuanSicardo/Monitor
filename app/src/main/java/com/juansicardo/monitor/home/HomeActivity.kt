@@ -72,8 +72,6 @@ class HomeActivity : AppCompatActivity() {
     //Business logic
     private val homeViewModel: HomeViewModel by viewModels()
     private val measurementViewModel: MeasurementViewModel by viewModels()
-    private val heartRateHistoryViewModel: HistoryViewModel by viewModels()
-    private val bloodOxygenHistoryViewModel: HistoryViewModel by viewModels()
 
     //Bluetooth
     private val bluetoothViewModel: BluetoothViewModel by viewModels()
@@ -232,11 +230,12 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    //Measurement History
+    private val historyViewModel: HistoryViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
-        Log.d(ApplicationConstants.APP_TAG, "Home Activity on Create")
 
         loadingDialogFragment = LoadingDialogFragment(this)
         homeViewModel.loadingDialogFragment = loadingDialogFragment
@@ -338,9 +337,11 @@ class HomeActivity : AppCompatActivity() {
                 sendSMSPermissionRequester.request()
                 locationPermissionRequester.request()
 
+                //Measurement History
+                historyViewModel.initialize(this, dataBaseViewModel, profile.profileId)
+
                 loadingDialogFragment.dismiss()
             } catch (e: Exception) {
-                Log.d(ApplicationConstants.APP_TAG, "Se ejecuta")
                 profileLiveData.removeObservers(this)
                 bluetoothGatt?.close()
                 finish()

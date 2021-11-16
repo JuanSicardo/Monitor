@@ -3,6 +3,7 @@ package com.juansicardo.monitor.heartrate
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,10 @@ import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.github.mikephil.charting.charts.ScatterChart
 import com.juansicardo.monitor.R
+import com.juansicardo.monitor.home.HistoryChart
+import com.juansicardo.monitor.home.HistoryViewModel
 import com.juansicardo.monitor.home.HomeViewModel
 import com.juansicardo.monitor.profile.Profile
 
@@ -27,6 +31,7 @@ class HeartRateFragment : Fragment() {
     private lateinit var warningDisplay: LinearLayoutCompat
     private lateinit var warningTextView: TextView
     private lateinit var activateBluetoothButton: Button
+    private lateinit var measurementGraph: ScatterChart
 
     //Extract data from parent activity
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -44,6 +49,10 @@ class HeartRateFragment : Fragment() {
             dataTextView.text = value.toString()
         }
 
+    private val heartRateHistoryViewModel: HistoryViewModel by activityViewModels()
+    private lateinit var heartRateMeasurementHistory: HistoryViewModel.MeasurementHistory
+    private lateinit var heartRateHistoryChart: HistoryChart
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +69,7 @@ class HeartRateFragment : Fragment() {
         warningDisplay = view.findViewById(R.id.warning_display)
         warningTextView = view.findViewById(R.id.warning_text_view)
         activateBluetoothButton = view.findViewById(R.id.activate_bluetooth_button)
+        measurementGraph = view.findViewById(R.id.measurement_graph)
 
         //Get from parent activity
         homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
@@ -86,6 +96,11 @@ class HeartRateFragment : Fragment() {
             }
 
             updateUI()
+        }
+
+        heartRateHistoryViewModel.heartRateMeasurementHistory.observe(viewLifecycleOwner) { heartRateMeasurementHistory ->
+            this.heartRateMeasurementHistory = heartRateMeasurementHistory
+            heartRateHistoryChart = HistoryChart(measurementGraph, listOf(heartRateMeasurementHistory))
         }
 
         //Action listeners

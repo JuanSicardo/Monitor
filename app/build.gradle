@@ -47,6 +47,7 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"

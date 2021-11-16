@@ -1,5 +1,6 @@
 package com.juansicardo.monitor.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.juansicardo.monitor.constants.ApplicationConstants
 import com.juansicardo.monitor.database.DataBaseViewModel
@@ -11,7 +12,8 @@ class MeasurementViewModel : ViewModel() {
     var profileId: Int = 0
     lateinit var databaseViewModel: DataBaseViewModel
 
-    private val currentTimeStamp = System.currentTimeMillis()
+    private val currentTimeStamp
+        get() = System.currentTimeMillis()
 
     fun recordHeartRateMeasurement(heartRateMeasurementValue: Int) {
         val measurement = Measurement(
@@ -22,6 +24,7 @@ class MeasurementViewModel : ViewModel() {
             profileOwnerId = profileId
         )
 
+        Log.d(ApplicationConstants.APP_TAG, "Measurement stored: $measurement")
         databaseViewModel.insertMeasurement(measurement)
     }
 
