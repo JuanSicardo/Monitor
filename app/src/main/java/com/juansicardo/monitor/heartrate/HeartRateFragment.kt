@@ -3,7 +3,6 @@ package com.juansicardo.monitor.heartrate
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,8 +54,8 @@ class HeartRateFragment : Fragment() {
     private lateinit var heartRateHistoryChart: HistoryChart
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.heart_rate_fragment, container, false)
     }

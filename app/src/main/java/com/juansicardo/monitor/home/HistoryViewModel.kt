@@ -54,7 +54,7 @@ class HistoryViewModel : ViewModel() {
     //dateTimestamp: a timestamp in milliseconds that represents an arbitrary time of the date you want to consult.
     inner class MeasurementHistory(
         private val type: Int,
-        private var dateTimestamp: Long = System.currentTimeMillis()
+        private var dateTimestamp: Long = System.currentTimeMillis() - 21600000
     ) {
 
         private lateinit var measurementsLiveData: LiveData<List<Measurement>>

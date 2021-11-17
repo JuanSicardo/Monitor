@@ -12,6 +12,7 @@ object Charts {
             with(xAxis) {
                 axisMinimum = 0.0f
                 axisMaximum = 24.0f
+                valueFormatter = CustomValueFormatter()
             }
 
             with(axisLeft) {
