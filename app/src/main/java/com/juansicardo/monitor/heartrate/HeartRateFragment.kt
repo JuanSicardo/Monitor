@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.ScatterChart
 import com.juansicardo.monitor.R
+import com.juansicardo.monitor.home.Charts
 import com.juansicardo.monitor.home.HistoryChart
 import com.juansicardo.monitor.home.HistoryViewModel
 import com.juansicardo.monitor.home.HomeViewModel
@@ -100,6 +101,7 @@ class HeartRateFragment : Fragment() {
 
         heartRateHistoryViewModel.heartRateMeasurementHistory.observe(viewLifecycleOwner) { heartRateMeasurementHistory ->
             this.heartRateMeasurementHistory = heartRateMeasurementHistory
+            Charts.configAsHeartRateChart(measurementGraph)
             heartRateHistoryChart = HistoryChart(measurementGraph, listOf(heartRateMeasurementHistory))
         }
 

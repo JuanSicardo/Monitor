@@ -24,7 +24,6 @@ class MeasurementViewModel : ViewModel() {
             profileOwnerId = profileId
         )
 
-        Log.d(ApplicationConstants.APP_TAG, "Measurement stored: $measurement")
         databaseViewModel.insertMeasurement(measurement)
     }
 

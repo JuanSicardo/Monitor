@@ -28,12 +28,8 @@ data class Measurement(
 ) {
     fun toChartEntry(): Entry {
         val y = value.toFloat()
-
-        Log.d(ApplicationConstants.APP_TAG, "Date recorded in the database: $date")
-        val timeOfDay = date % 86400000
-        Log.d(ApplicationConstants.APP_TAG, "Time of the day in long: $timeOfDay")
-        val x = (timeOfDay.toFloat() / 86400000.toFloat()) * 100.0.toFloat()
-        Log.d(ApplicationConstants.APP_TAG, "x: $x")
+        val timeOfDay = (date - 21600000) % 86400000
+        val x = (timeOfDay.toFloat() / 86400000.toFloat()) * 24.toFloat()
 
         return Entry(x, y)
     }
