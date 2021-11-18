@@ -366,4 +366,9 @@ class HomeActivity : AppCompatActivity() {
             bleScanner.stopScan(scanCallback)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        homeViewModel.bluetoothGatt?.close()
+    }
 }

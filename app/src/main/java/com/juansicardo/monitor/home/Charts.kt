@@ -1,13 +1,12 @@
 package com.juansicardo.monitor.home
 
-import android.content.Context
 import com.github.mikephil.charting.charts.ScatterChart
 
 object Charts {
 
     fun configAsHeartRateChart(scatterChart: ScatterChart) {
         with(scatterChart) {
-            setTouchEnabled(false)
+            setMaxVisibleValueCount(0)
 
             with(xAxis) {
                 axisMinimum = 0.0f

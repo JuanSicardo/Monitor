@@ -99,7 +99,7 @@ class HistoryViewModel : ViewModel() {
             updateLiveData()
         }
 
-        private fun toDataSet(): ScatterDataSet {
+        fun toDataSet(): ScatterDataSet {
             val entries = mutableListOf<Entry>()
             measurements.forEach { entries.add(it.toChartEntry()) }
             return ScatterDataSet(entries, chartLabel)

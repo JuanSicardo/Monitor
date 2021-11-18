@@ -9,33 +9,47 @@ class HistoryChart(
         private val scatterChart: ScatterChart,
         private val measurementHistories: List<HistoryViewModel.MeasurementHistory>
 ) {
-
     private var scatterData = ScatterData()
-    private val datasets = mutableListOf<ScatterDataSet>()
+    private val datasets = mutableMapOf<Int, ScatterDataSet>()
 
     init {
+
+        try {
+            for (i in measurementHistories.indices) {
+                datasets[i] = measurementHistories[i].toDataSet()
+            }
+            updateData()
+        } catch (exception: Exception) {
+        }
+
         for (i in measurementHistories.indices) {
             measurementHistories[i].setOnDataChangeListener { scatterDataSet ->
-                datasets.add(i, scatterDataSet)
+                datasets[i] = scatterDataSet
                 updateData()
             }
         }
     }
 
     private fun updateData() {
-        scatterData = ScatterData()
-        setDatasetColors()
-        datasets.forEach { scatterData.addDataSet(it) }
+        scatterData.clearValues()
         scatterChart.data = scatterData
+        scatterChart.notifyDataSetChanged()
+        scatterChart.invalidate()
+
+        setDatasetColors()
+        scatterData = ScatterData()
+        datasets.values.forEach { scatterData.addDataSet(it) }
+        scatterChart.data = scatterData
+        scatterChart.notifyDataSetChanged()
         scatterChart.invalidate()
     }
 
     private fun setDatasetColors() {
-        for (i in 0 until datasets.size) {
+        for (i in datasets.keys) {
             if (i % 2 == 0)
-                datasets[i].color = R.color.purple_700
+                datasets[i]?.color = R.color.purple_700
             else
-                datasets[i].color = R.color.teal_700
+                datasets[i]?.color = R.color.teal_700
         }
     }
 }

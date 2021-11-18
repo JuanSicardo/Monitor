@@ -82,7 +82,6 @@ class SettingsFragment : Fragment() {
 
         //Logout
         logoutCardView.setOnClickListener {
-            homeViewModel.bluetoothGatt?.close()
             activity?.finish()
         }
     }
