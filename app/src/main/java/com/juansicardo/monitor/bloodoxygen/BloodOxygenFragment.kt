@@ -11,7 +11,11 @@ import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.github.mikephil.charting.charts.ScatterChart
 import com.juansicardo.monitor.R
+import com.juansicardo.monitor.home.Charts
+import com.juansicardo.monitor.home.HistoryChart
+import com.juansicardo.monitor.home.HistoryViewModel
 import com.juansicardo.monitor.home.HomeViewModel
 import com.juansicardo.monitor.profile.Profile
 
@@ -27,6 +31,7 @@ class BloodOxygenFragment : Fragment() {
     private lateinit var warningDisplay: LinearLayoutCompat
     private lateinit var warningTextView: TextView
     private lateinit var activateBluetoothButton: Button
+    private lateinit var measurementGraph: ScatterChart
 
     //Extract data from parent activity
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -44,6 +49,10 @@ class BloodOxygenFragment : Fragment() {
             dataTextView.text = value.toString()
         }
 
+    private val bloodOxygenHistoryViewModel: HistoryViewModel by activityViewModels()
+    private lateinit var bloodOxygenMeasurementHistory: HistoryViewModel.MeasurementHistory
+    private lateinit var bloodOxygenHistoryChart: HistoryChart
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,6 +69,7 @@ class BloodOxygenFragment : Fragment() {
         warningDisplay = view.findViewById(R.id.warning_display)
         warningTextView = view.findViewById(R.id.warning_text_view)
         activateBluetoothButton = view.findViewById(R.id.activate_bluetooth_button)
+        measurementGraph = view.findViewById(R.id.measurement_graph)
 
         //Get from parent activity
         homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
@@ -86,6 +96,12 @@ class BloodOxygenFragment : Fragment() {
             }
 
             updateUI()
+        }
+
+        bloodOxygenHistoryViewModel.bloodOxygenMeasurementHistory.observe(viewLifecycleOwner) { bloodOxygenMeasurementHistory ->
+            this.bloodOxygenMeasurementHistory = bloodOxygenMeasurementHistory
+            Charts.configAsBloodOxygenChart(measurementGraph)
+            bloodOxygenHistoryChart = HistoryChart(measurementGraph, listOf(bloodOxygenMeasurementHistory))
         }
 
         //Action listeners
