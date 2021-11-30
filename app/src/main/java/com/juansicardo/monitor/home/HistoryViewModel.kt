@@ -1,13 +1,11 @@
 package com.juansicardo.monitor.home
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.ScatterDataSet
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.juansicardo.monitor.constants.ApplicationConstants
 import com.juansicardo.monitor.database.DataBaseViewModel
 import com.juansicardo.monitor.measurement.Measurement
@@ -59,8 +57,10 @@ class HistoryViewModel : ViewModel() {
 
         private lateinit var measurementsLiveData: LiveData<List<Measurement>>
         private lateinit var measurements: List<Measurement>
-        private val start = dateTimestamp - (dateTimestamp % 86400000)
-        private val end = dateTimestamp + 86400000 - 1
+        private val start
+            get() = dateTimestamp - (dateTimestamp % 86400000) + 21600000
+        private val end
+            get() = dateTimestamp + 86400000 - 1 + 21600000
 
         private val onDataChangedCallbacks = mutableListOf<OnDataChangeCallback>()
 
@@ -78,6 +78,7 @@ class HistoryViewModel : ViewModel() {
 
         private fun initializeLiveData() {
             measurementsLiveData = dataBaseViewModel.findMeasurementsByProfileTypeAndDate(profileId, type, start, end)
+
             measurementsLiveData.observe(lifecycleOwner) { measurements ->
 
                 this.measurements = measurements

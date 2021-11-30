@@ -7,22 +7,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.DatePicker
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.ScatterChart
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.textfield.TextInputLayout
 import com.juansicardo.monitor.R
 import com.juansicardo.monitor.home.Charts
 import com.juansicardo.monitor.home.HistoryChart
 import com.juansicardo.monitor.home.HistoryViewModel
 import com.juansicardo.monitor.home.HomeViewModel
+import com.juansicardo.monitor.profile.CreateProfileActivity
 import com.juansicardo.monitor.profile.Profile
+import java.text.DateFormat
+import java.util.*
 
 class HeartRateFragment : Fragment() {
 
     companion object {
         private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
+        private const val DATE_PICKER_TAG = "com.juansicardo.monitor.heart_rate_fragment.date_picker"
     }
 
     //Declare UI elements
@@ -31,7 +41,10 @@ class HeartRateFragment : Fragment() {
     private lateinit var warningDisplay: LinearLayoutCompat
     private lateinit var warningTextView: TextView
     private lateinit var activateBluetoothButton: Button
+    private lateinit var dateInputLayout: TextInputLayout
+    private lateinit var dateEditText: EditText
     private lateinit var measurementGraph: ScatterChart
+    private lateinit var datePicker: MaterialDatePicker<Long>
 
     //Extract data from parent activity
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -47,6 +60,18 @@ class HeartRateFragment : Fragment() {
         set(value) {
             field = value
             dataTextView.text = value.toString()
+        }
+
+    private var date = 0L
+        set(value) {
+            field = value
+            heartRateMeasurementHistory.setDate(field)
+            heartRateHistoryChart.updateData()
+
+            val dateObject = Date(field + 86400000)
+            val dateFormat = DateFormat.getDateInstance()
+            val dateString = dateFormat.format(dateObject)
+            dateEditText.setText(dateString)
         }
 
     private val heartRateHistoryViewModel: HistoryViewModel by activityViewModels()
@@ -70,6 +95,16 @@ class HeartRateFragment : Fragment() {
         warningTextView = view.findViewById(R.id.warning_text_view)
         activateBluetoothButton = view.findViewById(R.id.activate_bluetooth_button)
         measurementGraph = view.findViewById(R.id.measurement_graph)
+        dateInputLayout = view.findViewById(R.id.date_input_layout)
+        dateEditText = view.findViewById(R.id.date_edit_text)
+
+        val today = MaterialDatePicker.todayInUtcMilliseconds()
+        val constraintBuilder = CalendarConstraints.Builder().setValidator(DateValidatorPointBackward.before(today))
+        datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("").setSelection(today)
+            .setCalendarConstraints(constraintBuilder.build()).build()
+        datePicker.addOnPositiveButtonClickListener { date ->
+            this.date = date
+        }
 
         //Get from parent activity
         homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
@@ -102,11 +137,16 @@ class HeartRateFragment : Fragment() {
             this.heartRateMeasurementHistory = heartRateMeasurementHistory
             Charts.configAsHeartRateChart(measurementGraph)
             heartRateHistoryChart = HistoryChart(measurementGraph, listOf(heartRateMeasurementHistory))
+            date = MaterialDatePicker.todayInUtcMilliseconds()
         }
 
         //Action listeners
         activateBluetoothButton.setOnClickListener {
             promptEnableBluetooth()
+        }
+
+        dateEditText.setOnClickListener {
+            datePicker.show(requireFragmentManager(), DATE_PICKER_TAG)
         }
     }
 

@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.ScatterChart
+import com.google.android.material.textfield.TextInputLayout
 import com.juansicardo.monitor.R
 import com.juansicardo.monitor.home.Charts
 import com.juansicardo.monitor.home.HistoryChart
@@ -31,6 +33,8 @@ class BloodOxygenFragment : Fragment() {
     private lateinit var warningDisplay: LinearLayoutCompat
     private lateinit var warningTextView: TextView
     private lateinit var activateBluetoothButton: Button
+    private lateinit var dateInputLayout: TextInputLayout
+    private lateinit var dateEditText: EditText
     private lateinit var measurementGraph: ScatterChart
 
     //Extract data from parent activity
@@ -70,6 +74,8 @@ class BloodOxygenFragment : Fragment() {
         warningTextView = view.findViewById(R.id.warning_text_view)
         activateBluetoothButton = view.findViewById(R.id.activate_bluetooth_button)
         measurementGraph = view.findViewById(R.id.measurement_graph)
+        dateInputLayout = view.findViewById(R.id.date_input_layout)
+        dateEditText = view.findViewById(R.id.date_edit_text)
 
         //Get from parent activity
         homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
@@ -107,6 +113,10 @@ class BloodOxygenFragment : Fragment() {
         //Action listeners
         activateBluetoothButton.setOnClickListener {
             promptEnableBluetooth()
+        }
+
+        dateEditText.setOnClickListener {
+
         }
     }
 

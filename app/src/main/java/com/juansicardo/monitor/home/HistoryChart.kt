@@ -30,7 +30,7 @@ class HistoryChart(
         }
     }
 
-    private fun updateData() {
+    fun updateData() {
         scatterData.clearValues()
         scatterChart.data = scatterData
         scatterChart.notifyDataSetChanged()
