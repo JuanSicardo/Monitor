@@ -13,6 +13,9 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.mikephil.charting.charts.ScatterChart
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.juansicardo.monitor.R
 import com.juansicardo.monitor.home.Charts
@@ -20,11 +23,14 @@ import com.juansicardo.monitor.home.HistoryChart
 import com.juansicardo.monitor.home.HistoryViewModel
 import com.juansicardo.monitor.home.HomeViewModel
 import com.juansicardo.monitor.profile.Profile
+import java.text.DateFormat
+import java.util.*
 
 class BloodOxygenFragment : Fragment() {
 
     companion object {
         private const val ENABLE_BLUETOOTH_REQUEST_CODE = 1
+        private const val DATE_PICKER_TAG = "com.juansicardo.monitor.blood_oxygen_fragment.date_picker"
     }
 
     //Declare UI elements
@@ -36,6 +42,7 @@ class BloodOxygenFragment : Fragment() {
     private lateinit var dateInputLayout: TextInputLayout
     private lateinit var dateEditText: EditText
     private lateinit var measurementGraph: ScatterChart
+    private lateinit var datePicker: MaterialDatePicker<Long>
 
     //Extract data from parent activity
     private val homeViewModel: HomeViewModel by activityViewModels()
@@ -51,6 +58,18 @@ class BloodOxygenFragment : Fragment() {
         set(value) {
             field = value
             dataTextView.text = value.toString()
+        }
+
+    private var date = 0L
+        set(value) {
+            field = value
+            bloodOxygenMeasurementHistory.setDate(field)
+            bloodOxygenHistoryChart.updateData()
+
+            val dateObject = Date(field + 86400000)
+            val dateFormat = DateFormat.getDateInstance()
+            val dateString = dateFormat.format(dateObject)
+            dateEditText.setText(dateString)
         }
 
     private val bloodOxygenHistoryViewModel: HistoryViewModel by activityViewModels()
@@ -76,6 +95,14 @@ class BloodOxygenFragment : Fragment() {
         measurementGraph = view.findViewById(R.id.measurement_graph)
         dateInputLayout = view.findViewById(R.id.date_input_layout)
         dateEditText = view.findViewById(R.id.date_edit_text)
+
+        val today = MaterialDatePicker.todayInUtcMilliseconds()
+        val constraintBuilder = CalendarConstraints.Builder().setValidator(DateValidatorPointBackward.before(today))
+        datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("").setSelection(today)
+            .setCalendarConstraints(constraintBuilder.build()).build()
+        datePicker.addOnPositiveButtonClickListener { date ->
+            this.date = date
+        }
 
         //Get from parent activity
         homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
@@ -108,6 +135,7 @@ class BloodOxygenFragment : Fragment() {
             this.bloodOxygenMeasurementHistory = bloodOxygenMeasurementHistory
             Charts.configAsBloodOxygenChart(measurementGraph)
             bloodOxygenHistoryChart = HistoryChart(measurementGraph, listOf(bloodOxygenMeasurementHistory))
+            date = MaterialDatePicker.todayInUtcMilliseconds()
         }
 
         //Action listeners
@@ -116,7 +144,7 @@ class BloodOxygenFragment : Fragment() {
         }
 
         dateEditText.setOnClickListener {
-
+            datePicker.show(requireFragmentManager(), DATE_PICKER_TAG)
         }
     }
 

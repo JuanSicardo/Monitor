@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -23,7 +22,6 @@ import com.juansicardo.monitor.home.Charts
 import com.juansicardo.monitor.home.HistoryChart
 import com.juansicardo.monitor.home.HistoryViewModel
 import com.juansicardo.monitor.home.HomeViewModel
-import com.juansicardo.monitor.profile.CreateProfileActivity
 import com.juansicardo.monitor.profile.Profile
 import java.text.DateFormat
 import java.util.*
@@ -79,8 +77,8 @@ class HeartRateFragment : Fragment() {
     private lateinit var heartRateHistoryChart: HistoryChart
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.heart_rate_fragment, container, false)
     }
