@@ -58,5 +58,5 @@
     <string name="location_disabled_warning">Localización está desactivada, por favor activelo para poder visualizar sus datos (La localización es necesaria para usar bluetooth)</string>
     <string name="smart_band_not_connected_warning">La pulsera inteligente no está conectada, por favor asegurate que esté encendida y dentro del rango bluetooth</string>
     <string name="max_heart_rate">Frecuencia Cardiaca Máxima</string>
-    <string name="healthy_blood_oxygen">Oxigenación Saludable</string>
+    <string name="healthy_blood_oxygen">Oxigenación Mínima Saludable</string>
 </resources>
