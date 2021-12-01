@@ -3,6 +3,7 @@ package com.juansicardo.monitor.heartrate
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.juansicardo.monitor.R
+import com.juansicardo.monitor.constants.ApplicationConstants
 import com.juansicardo.monitor.home.Charts
 import com.juansicardo.monitor.home.HistoryChart
 import com.juansicardo.monitor.home.HistoryViewModel
@@ -47,6 +49,7 @@ class HeartRateFragment : Fragment() {
     //Extract data from parent activity
     private val homeViewModel: HomeViewModel by activityViewModels()
     private lateinit var profile: Profile
+    private var ageInMillis = 0L
 
     //Bluetooth
     private var isBluetoothEnabled = false
@@ -107,6 +110,7 @@ class HeartRateFragment : Fragment() {
         //Get from parent activity
         homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
             this.profile = profile
+            ageInMillis = System.currentTimeMillis() - profile.birthdayTimestamp
         }
 
         homeViewModel.isBluetoothEnabled.observe(viewLifecycleOwner) { isBluetoothEnabled ->
@@ -132,8 +136,12 @@ class HeartRateFragment : Fragment() {
         }
 
         heartRateHistoryViewModel.heartRateMeasurementHistory.observe(viewLifecycleOwner) { heartRateMeasurementHistory ->
+            val ageInDays = (ageInMillis / 86400000L).toInt() + 1
+            val ageInYears = (ageInDays / 365)
+            val maxHeartRate = (208.0 - 0.7 * ageInYears.toDouble()).toInt()
+
             this.heartRateMeasurementHistory = heartRateMeasurementHistory
-            Charts.configAsHeartRateChart(measurementGraph, requireContext())
+            Charts.configAsHeartRateChart(measurementGraph, requireContext(), maxHeartRate)
             heartRateHistoryChart = HistoryChart(measurementGraph, listOf(heartRateMeasurementHistory))
             date = MaterialDatePicker.todayInUtcMilliseconds()
         }

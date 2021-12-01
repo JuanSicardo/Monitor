@@ -8,11 +8,11 @@ import com.juansicardo.monitor.R
 
 object Charts {
 
-    fun configAsHeartRateChart(scatterChart: ScatterChart, context: Context) {
+    fun configAsHeartRateChart(scatterChart: ScatterChart, context: Context, maxHeartRate: Int) {
         with(scatterChart) {
             setMaxVisibleValueCount(0)
 
-            val limitLine = LimitLine(120f, context.getString(R.string.max_heart_rate)).apply {
+            val limitLine = LimitLine(maxHeartRate.toFloat(), context.getString(R.string.max_heart_rate)).apply {
                 lineColor = Color.CYAN
                 lineWidth = 1f
             }
