@@ -7,8 +7,15 @@ class TimeValueFormatter : ValueFormatter() {
 
     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
         val hour = getHour(value)
+        val minutes = getMinute(value)
+        val seconds = getSeconds(value)
         val period = getPeriod(value)
-        return "$hour$period"
+
+        return when {
+            minutes == "00" && seconds == "00" -> "$hour$period"
+            seconds == "00" -> "$hour:$minutes$period"
+            else -> "$hour:$minutes:$seconds$period"
+        }
     }
 
     private fun getHour(value: Float): String {
@@ -23,13 +30,13 @@ class TimeValueFormatter : ValueFormatter() {
 
     private fun getMinute(value: Float): String {
         val totalMinutes = (value * 60).toInt()
-        return (totalMinutes % 60).toString()
+        return "%02d".format(totalMinutes % 60)
     }
 
     private fun getSeconds(value: Float): String {
         val secondsPerHour = 60 * 60
         val totalSeconds = (value * secondsPerHour).toInt()
-        return (totalSeconds % secondsPerHour).toString()
+        return "%02d".format(totalSeconds % 60)
     }
 
     private fun getPeriod(value: Float): String {

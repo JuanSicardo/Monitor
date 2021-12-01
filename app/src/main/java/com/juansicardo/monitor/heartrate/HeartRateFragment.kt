@@ -133,7 +133,7 @@ class HeartRateFragment : Fragment() {
 
         heartRateHistoryViewModel.heartRateMeasurementHistory.observe(viewLifecycleOwner) { heartRateMeasurementHistory ->
             this.heartRateMeasurementHistory = heartRateMeasurementHistory
-            Charts.configAsHeartRateChart(measurementGraph)
+            Charts.configAsHeartRateChart(measurementGraph, requireContext())
             heartRateHistoryChart = HistoryChart(measurementGraph, listOf(heartRateMeasurementHistory))
             date = MaterialDatePicker.todayInUtcMilliseconds()
         }

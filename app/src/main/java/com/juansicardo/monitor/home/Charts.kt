@@ -1,10 +1,11 @@
 package com.juansicardo.monitor.home
 
+import android.content.Context
 import com.github.mikephil.charting.charts.ScatterChart
 
 object Charts {
 
-    fun configAsHeartRateChart(scatterChart: ScatterChart) {
+    fun configAsHeartRateChart(scatterChart: ScatterChart, context: Context) {
         with(scatterChart) {
             setMaxVisibleValueCount(0)
 
@@ -17,11 +18,13 @@ object Charts {
             with(axisLeft) {
                 axisMinimum = 0.0f
                 axisMaximum = 200.0f
+                valueFormatter = HeartRateValueFormatter(context)
             }
 
             with(axisRight) {
                 axisMinimum = 0.0f
                 axisMaximum = 200.0f
+                valueFormatter = EmptyValueFormatter()
             }
         }
     }
@@ -39,11 +42,13 @@ object Charts {
             with(axisLeft) {
                 axisMinimum = 0.0f
                 axisMaximum = 100.0f
+                valueFormatter = BloodOxygenValueFormatter()
             }
 
             with(axisRight) {
                 axisMinimum = 0.0f
                 axisMaximum = 100.0f
+                valueFormatter = EmptyValueFormatter()
             }
         }
     }
