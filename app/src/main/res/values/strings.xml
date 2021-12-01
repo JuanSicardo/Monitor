@@ -57,4 +57,6 @@
     <string name="bluetooth_disabled_warning">Bluetooth is disabled, please enable it to visualize data</string>
     <string name="location_disabled_warning">Location is disabled, please enable it to visualize your data (Location services are necesary for use of bluetooth)</string>
     <string name="smart_band_not_connected_warning">Smart band is not connected, make sure it\'s on and within range</string>
+    <string name="max_heart_rate">Max Heart Rate</string>
+    <string name="healthy_blood_oxygen">Healthy Blood Oxygen</string>
 </resources>

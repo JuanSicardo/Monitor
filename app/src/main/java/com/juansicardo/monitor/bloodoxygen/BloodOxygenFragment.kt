@@ -133,7 +133,7 @@ class BloodOxygenFragment : Fragment() {
 
         bloodOxygenHistoryViewModel.bloodOxygenMeasurementHistory.observe(viewLifecycleOwner) { bloodOxygenMeasurementHistory ->
             this.bloodOxygenMeasurementHistory = bloodOxygenMeasurementHistory
-            Charts.configAsBloodOxygenChart(measurementGraph)
+            Charts.configAsBloodOxygenChart(measurementGraph, requireContext())
             bloodOxygenHistoryChart = HistoryChart(measurementGraph, listOf(bloodOxygenMeasurementHistory))
             date = MaterialDatePicker.todayInUtcMilliseconds()
         }
