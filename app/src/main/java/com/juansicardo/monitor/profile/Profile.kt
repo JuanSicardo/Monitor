@@ -3,7 +3,6 @@ package com.juansicardo.monitor.profile
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
 
 //TODO: add Date and string representations of the birthday
 
@@ -23,4 +22,12 @@ data class Profile(
     @ColumnInfo(name = "password_hash")
     val passwordHash: String
 
-)
+) {
+    val maxHeartRate: Int
+        get() {
+            val ageInMillis = System.currentTimeMillis() - birthdayTimestamp
+            val ageInDays = (ageInMillis / 86400000L).toInt() + 1
+            val ageInYears = (ageInDays / 365)
+            return (208.0 - 0.7 * ageInYears.toDouble()).toInt()
+        }
+}

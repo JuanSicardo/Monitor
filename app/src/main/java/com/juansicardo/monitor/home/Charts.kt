@@ -12,7 +12,10 @@ object Charts {
         with(scatterChart) {
             setMaxVisibleValueCount(0)
 
-            val limitLine = LimitLine(maxHeartRate.toFloat(), context.getString(R.string.max_heart_rate)).apply {
+            val limitLine = LimitLine(
+                maxHeartRate.toFloat(),
+                "${context.getString(R.string.max_heart_rate)}: $maxHeartRate ${context.getString(R.string.bps)}"
+            ).apply {
                 lineColor = Color.CYAN
                 lineWidth = 1f
             }
@@ -42,7 +45,10 @@ object Charts {
         with(scatterChart) {
             setMaxVisibleValueCount(0)
 
-            val limitLine = LimitLine(97f, context.getString(R.string.healthy_blood_oxygen)).apply {
+            val limitLine = LimitLine(
+                97f,
+                "${context.getString(R.string.healthy_blood_oxygen)}: 97%"
+            ).apply {
                 lineColor = Color.CYAN
                 lineWidth = 1f
             }

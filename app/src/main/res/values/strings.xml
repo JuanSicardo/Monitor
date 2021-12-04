@@ -59,4 +59,5 @@
     <string name="smart_band_not_connected_warning">Smart band is not connected, make sure it\'s on and within range</string>
     <string name="max_heart_rate">Max Heart Rate</string>
     <string name="healthy_blood_oxygen">Healthy Blood Oxygen</string>
+    <string name="emergency_message">Hola</string>
 </resources>

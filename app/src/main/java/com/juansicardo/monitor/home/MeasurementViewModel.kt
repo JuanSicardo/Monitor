@@ -10,6 +10,7 @@ class MeasurementViewModel : ViewModel() {
 
     //Needs to be set manually
     var profileId: Int = 0
+    var maxHeartRate: Int = 0
     lateinit var databaseViewModel: DataBaseViewModel
 
     private val currentTimeStamp

@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.telephony.SmsManager
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ import com.juansicardo.monitor.ble.LocationPermissionRequester
 import com.juansicardo.monitor.constants.ApplicationConstants
 import com.juansicardo.monitor.database.DataBaseViewModel
 import com.juansicardo.monitor.dialog.LoadingDialogFragment
+import com.juansicardo.monitor.emergencycontact.EmergencyContact
 import com.juansicardo.monitor.profile.Profile
 import com.juansicardo.monitor.settings.ProfileSettingsManager
 import com.juansicardo.monitor.sms.SendSMSPermissionRequester
@@ -58,10 +60,15 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var profileLiveData: LiveData<Profile>
     lateinit var profile: Profile
 
+    private lateinit var emergencyContactsLiveData: LiveData<List<EmergencyContact>>
+    lateinit var emergencyContacts: List<EmergencyContact>
+
     //Permission management
+    private var isSendSMSPermissionGranted = false
     private var sendSMSPermissionRequester: SendSMSPermissionRequester =
         SendSMSPermissionRequester(this) { isPermissionGranted ->
             homeViewModel.setIsSendSMSPermissionGranted(isPermissionGranted)
+            isSendSMSPermissionGranted = isPermissionGranted
         }
     private val locationPermissionRequester =
         LocationPermissionRequester(this) { isPermissionGranted ->
@@ -305,6 +312,32 @@ class HomeActivity : AppCompatActivity() {
                     if (heartRateCounter % 5 == 0) {
                         heartRateCounter = 0
                         measurementViewModel.recordHeartRateMeasurement(heartRate)
+
+                        if (heartRate >= profile.maxHeartRate) {
+                            Log.d(ApplicationConstants.APP_TAG, "Heart rate: $heartRate exceeded Max Heart Rate: ${profile.maxHeartRate}")
+                            Log.d(ApplicationConstants.APP_TAG, "Sending emergency messages to $emergencyContacts")
+                            emergencyContacts.forEach { emergencyContact ->
+                                Log.d(ApplicationConstants.APP_TAG, "Sending message to ${emergencyContact.name}...")
+                                Log.d(ApplicationConstants.APP_TAG, "Permission granted: $isSendSMSPermissionGranted")
+//                                val sms = SmsManager.getDefault()
+//                                sms.sendTextMessage(
+//                                    emergencyContact.phoneNumber,
+//                                    "MonitorApp",
+//                                    getString(R.string.emergency_message),
+//                                    null,
+//                                    null
+//                                )
+                                val sms = SmsManager.getDefault()
+                                sms.sendTextMessage(
+                                    emergencyContact.phoneNumber,
+                                    "MonitorApp",
+                                    getString(R.string.emergency_message),
+                                    null,
+                                    null
+                                )
+                                Log.d(ApplicationConstants.APP_TAG, "Message to ${emergencyContact.name} sent successfully!")
+                            }
+                        }
                     }
 
                     heartRateCounter++
@@ -340,7 +373,11 @@ class HomeActivity : AppCompatActivity() {
                 //Measurement History
                 historyViewModel.initialize(this, dataBaseViewModel, profile.profileId)
 
-                loadingDialogFragment.dismiss()
+                emergencyContactsLiveData = dataBaseViewModel.findEmergencyContactsOfProfile(profile.profileId)
+                emergencyContactsLiveData.observe(this) { emergencyContacts ->
+                    this.emergencyContacts = emergencyContacts
+                    loadingDialogFragment.dismiss()
+                }
             } catch (e: Exception) {
                 profileLiveData.removeObservers(this)
                 bluetoothGatt?.close()
@@ -369,6 +406,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d(ApplicationConstants.APP_TAG, "Se ejecutó")
         homeViewModel.bluetoothGatt?.close()
     }
 }

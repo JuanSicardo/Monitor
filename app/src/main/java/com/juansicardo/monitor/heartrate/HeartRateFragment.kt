@@ -49,7 +49,7 @@ class HeartRateFragment : Fragment() {
     //Extract data from parent activity
     private val homeViewModel: HomeViewModel by activityViewModels()
     private lateinit var profile: Profile
-    private var ageInMillis = 0L
+    private var maxHeartRate = 0
 
     //Bluetooth
     private var isBluetoothEnabled = false
@@ -110,7 +110,7 @@ class HeartRateFragment : Fragment() {
         //Get from parent activity
         homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
             this.profile = profile
-            ageInMillis = System.currentTimeMillis() - profile.birthdayTimestamp
+            maxHeartRate = profile.maxHeartRate
         }
 
         homeViewModel.isBluetoothEnabled.observe(viewLifecycleOwner) { isBluetoothEnabled ->
@@ -136,10 +136,6 @@ class HeartRateFragment : Fragment() {
         }
 
         heartRateHistoryViewModel.heartRateMeasurementHistory.observe(viewLifecycleOwner) { heartRateMeasurementHistory ->
-            val ageInDays = (ageInMillis / 86400000L).toInt() + 1
-            val ageInYears = (ageInDays / 365)
-            val maxHeartRate = (208.0 - 0.7 * ageInYears.toDouble()).toInt()
-
             this.heartRateMeasurementHistory = heartRateMeasurementHistory
             Charts.configAsHeartRateChart(measurementGraph, requireContext(), maxHeartRate)
             heartRateHistoryChart = HistoryChart(measurementGraph, listOf(heartRateMeasurementHistory))

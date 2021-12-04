@@ -59,4 +59,5 @@
     <string name="smart_band_not_connected_warning">La pulsera inteligente no está conectada, por favor asegurate que esté encendida y dentro del rango bluetooth</string>
     <string name="max_heart_rate">Frecuencia Cardiaca Máxima</string>
     <string name="healthy_blood_oxygen">Oxigenación Mínima Saludable</string>
+    <string name="emergency_message">Aplicacion de monitor cardiaco: Por favor comuniquese con el propietario de este numero de telefono. Se registro una frecuencia cardiaca muy alta.</string>
 </resources>
