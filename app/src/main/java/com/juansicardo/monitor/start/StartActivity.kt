@@ -12,6 +12,9 @@ import com.juansicardo.monitor.database.DataBaseViewModel
 import com.juansicardo.monitor.notification.NotificationSettingsActivity
 import com.juansicardo.monitor.profile.CreateProfileActivity
 import com.juansicardo.monitor.profile.ProfileListAdapter
+import android.content.Intent
+import android.net.Uri
+
 
 //Launch activity
 
@@ -48,10 +51,15 @@ class StartActivity : AppCompatActivity() {
         return true
     }
 
+    fun openWebURL(inURL: String?) {
+        val browse = Intent(Intent.ACTION_VIEW, Uri.parse(inURL))
+        startActivity(browse)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.global_settings_menu_item -> {
-                startActivity(NotificationSettingsActivity.createIntent(this))
+                openWebURL("https://correoipn-my.sharepoint.com/:b:/g/personal/jsicardoc1300_alumno_ipn_mx/EZ0Hi6Q8gjBKjYGEmGIObysBcX4V9To9Ub0gOtl7NMVTbg?e=OW5iCB")
                 true
             }
             else -> super.onOptionsItemSelected(item)

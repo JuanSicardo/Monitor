@@ -16,11 +16,6 @@
         android:label="blood_oxygen_fragment"
         tools:layout="@layout/blood_oxygen_fragment" />
     <fragment
-        android:id="@+id/bloodPressureFragment"
-        android:name="com.juansicardo.monitor.bloodpressure.BloodPressureFragment"
-        android:label="blood_pressure_fragment"
-        tools:layout="@layout/blood_pressure_fragment" />
-    <fragment
         android:id="@+id/settingsFragment"
         android:name="com.juansicardo.monitor.settings.SettingsFragment"
         android:label="settings_fragment"

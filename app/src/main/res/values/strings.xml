@@ -60,4 +60,5 @@
     <string name="max_heart_rate">Max Heart Rate</string>
     <string name="healthy_blood_oxygen">Healthy Blood Oxygen</string>
     <string name="emergency_message">Hola</string>
+    <string name="aviso_privacidad_title">Aviso de Privacidad</string>
 </resources>

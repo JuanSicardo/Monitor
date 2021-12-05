@@ -60,4 +60,5 @@
     <string name="max_heart_rate">Frecuencia Cardiaca Máxima</string>
     <string name="healthy_blood_oxygen">Oxigenación Mínima Saludable</string>
     <string name="emergency_message">Aplicacion de monitor cardiaco: Por favor comuniquese con el propietario de este numero de telefono. Se registro una frecuencia cardiaca muy alta.</string>
+    <string name="aviso_privacidad_title">Aviso de Privacidad</string>
 </resources>

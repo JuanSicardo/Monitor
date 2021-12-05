@@ -10,10 +10,6 @@
         android:icon="@drawable/ic_lungs"
         android:title="@string/oxygen" />
     <item
-        android:id="@+id/bloodPressureFragment"
-        android:icon="@drawable/ic_blood_pressure"
-        android:title="@string/blood_pressure" />
-    <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/settings" />
