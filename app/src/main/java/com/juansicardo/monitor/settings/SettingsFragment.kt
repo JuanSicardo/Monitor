@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.juansicardo.monitor.R
 import com.juansicardo.monitor.emergencycontact.EmergencyContactsActivity
 import com.juansicardo.monitor.home.HomeViewModel
@@ -20,9 +18,10 @@ class SettingsFragment : Fragment() {
     //Declare UI elements
     private lateinit var editProfileCardView: CardView
     private lateinit var emergencyContactsCardView: CardView
-    private lateinit var emergencyMessagesCardView: CardView
+
+    //private lateinit var emergencyMessagesCardView: CardView
     private lateinit var logoutCardView: CardView
-    private lateinit var emergencyMessagesSwitch: SwitchMaterial
+    //private lateinit var emergencyMessagesSwitch: SwitchMaterial
 
     //Permission management
     private var isSendSMSPermissionGranted = false
@@ -47,9 +46,9 @@ class SettingsFragment : Fragment() {
         //Initialize UI
         editProfileCardView = view.findViewById(R.id.edit_profile_card_view)
         emergencyContactsCardView = view.findViewById(R.id.emergency_contacts_card_view)
-        emergencyMessagesCardView = view.findViewById(R.id.emergency_messages_card_view)
+        //emergencyMessagesCardView = view.findViewById(R.id.emergency_messages_card_view)
         logoutCardView = view.findViewById(R.id.logout_card_view)
-        emergencyMessagesSwitch = view.findViewById(R.id.emergency_messages_switch)
+        //emergencyMessagesSwitch = view.findViewById(R.id.emergency_messages_switch)
 
         //Extract data from parent activity
         homeViewModel.profile.observe(viewLifecycleOwner) { profile ->
@@ -76,9 +75,9 @@ class SettingsFragment : Fragment() {
         }
 
         //Toggle emergency messages service
-        emergencyMessagesCardView.setOnClickListener {
-            setAreEmergencySMSEnabled(!getAreEmergencySMSEnabled())
-        }
+//        emergencyMessagesCardView.setOnClickListener {
+//            setAreEmergencySMSEnabled(!getAreEmergencySMSEnabled())
+//        }
 
         //Logout
         logoutCardView.setOnClickListener {
@@ -89,22 +88,22 @@ class SettingsFragment : Fragment() {
     private fun getAreEmergencySMSEnabled() = profileSettingsManager.getAreEmergencySMSEnabled()
 
     private fun setAreEmergencySMSEnabled(areEmergencySMSEnabled: Boolean) {
-        emergencyMessagesSwitch.isChecked = areEmergencySMSEnabled
+        //emergencyMessagesSwitch.isChecked = areEmergencySMSEnabled
         profileSettingsManager.setAreEmergencySMSEnabled(areEmergencySMSEnabled)
     }
 
     //Initializes the message option in the UI
     private fun initMessageOption() {
         if (isSendSMSPermissionGranted) {
-            emergencyMessagesSwitch.isChecked = getAreEmergencySMSEnabled()
+            //emergencyMessagesSwitch.isChecked = getAreEmergencySMSEnabled()
 
         } else {
             setAreEmergencySMSEnabled(false)
 
             //Tell user they cant use emergency messages
-            emergencyMessagesCardView.setOnClickListener {
-                Toast.makeText(requireContext(), R.string.no_send_message_permission_granted, Toast.LENGTH_LONG).show()
-            }
+//            emergencyMessagesCardView.setOnClickListener {
+//                Toast.makeText(requireContext(), R.string.no_send_message_permission_granted, Toast.LENGTH_LONG).show()
+//            }
         }
     }
 }
